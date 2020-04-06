@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { allReaders } from 'app/data';
+import { Reader } from 'app/models/reader';
 
 @Component({
   selector: 'app-edit-reader',
