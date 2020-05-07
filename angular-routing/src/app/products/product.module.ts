@@ -1,3 +1,4 @@
+import { ProductEditGuard } from './product-edit/product-edit.guard';
 import { ProductResolver } from './product-resolver.service';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
@@ -9,31 +10,41 @@ import { ProductEditComponent } from './product-edit/product-edit.component';
 
 import { SharedModule } from '../shared/shared.module';
 import { ProductEditInfoComponent } from './product-edit/product-edit-info.component';
+import { AuthGuard } from '../user/auth.guard';
 
 @NgModule({
   imports: [
     SharedModule,
     RouterModule.forChild([
-      { path: 'products', component: ProductListComponent },
-      { path: 'products/:id',
-        component: ProductDetailComponent,
-        resolve: { resolvedData: ProductResolver} },
-      { path: 'products/:id/edit',
-        component: ProductEditComponent,
-        resolve: { resolvedData: ProductResolver},
+      { path: 'products',
+        canActivate: [AuthGuard],
         children: [
+          { path: '', component: ProductListComponent},
           {
-            path: '',
-            redirectTo: 'info',
-            pathMatch: 'full'
+            path: ':id',
+            component: ProductDetailComponent,
+            resolve: { resolvedData: ProductResolver}
           },
           {
-            path: 'info',
-            component: ProductEditInfoComponent
-          },
-          {
-            path: 'tags',
-            component: ProductEditTagsComponent
+            path: ':id/edit',
+            component: ProductEditComponent,
+            canDeactivate: [ProductEditGuard],
+            resolve: { resolvedData: ProductResolver},
+            children: [
+              {
+                path: '',
+                redirectTo: 'info',
+                pathMatch: 'full'
+              },
+              {
+                path: 'info',
+                component: ProductEditInfoComponent
+              },
+              {
+                path: 'tags',
+                component: ProductEditTagsComponent
+              }
+            ]
           }
         ]
       }
