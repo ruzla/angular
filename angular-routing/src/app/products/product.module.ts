@@ -10,15 +10,11 @@ import { ProductEditComponent } from './product-edit/product-edit.component';
 
 import { SharedModule } from '../shared/shared.module';
 import { ProductEditInfoComponent } from './product-edit/product-edit-info.component';
-import { AuthGuard } from '../user/auth.guard';
 
 @NgModule({
   imports: [
     SharedModule,
     RouterModule.forChild([
-      { path: 'products',
-        canActivate: [AuthGuard],
-        children: [
           { path: '', component: ProductListComponent},
           {
             path: ':id',
@@ -46,8 +42,6 @@ import { AuthGuard } from '../user/auth.guard';
               }
             ]
           }
-        ]
-      }
     ])
   ],
   declarations: [
