@@ -24,7 +24,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
   selectedProduct: Product | null;
   sub: Subscription;
 
-  constructor(private store: Store<fromProduct>,
+  constructor(private store: Store<fromProduct.ProductState>,
               private productService: ProductService) { }
 
   ngOnInit(): void {
@@ -38,12 +38,9 @@ export class ProductListComponent implements OnInit, OnDestroy {
     });
 
     // TODO: Unsubscibe
-    this.store.pipe(select('products')).subscribe(
-      products => {
-        if (products) {
-          this.displayCode = products.showProductCode;
-        }
-    });
+    this.store.pipe(select(fromProduct.getShowProductCode)).subscribe(
+      showProductCode => this.displayCode = showProductCode
+    );
   }
 
   ngOnDestroy(): void {
